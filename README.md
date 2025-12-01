@@ -8,9 +8,6 @@ Este é um sistema simples em Java (Swing + JDBC) para gerenciar alunos e seus t
 - DAOs JDBC: `AlunoJDBCDAO`, `TreinoJDBCDAO` (package `dao`) — atualmente configurados para MySQL.
 - Interfaces gráficas Swing: `MenuPrincipal`, `MenuAlunos`, `MenuTreinos` (package `view`).
 - Utilitário para popular o banco: `util.GeradorAlunosAleatorios` — gera e insere 20 alunos aleatórios.
-
-O formato de data utilizado na UI é localizado para Brasil: `DD-MM-YYYY`.
-
 ## Requisitos
 
 - Java JDK 11+ instalado e `java`/`javac` no PATH.
@@ -25,37 +22,7 @@ O formato de data utilizado na UI é localizado para Brasil: `DD-MM-YYYY`.
 
 ## Banco de dados (MySQL)
 
-Por padrão os DAOs usam a URL `jdbc:mysql://localhost:3306/projeto_database` com usuário `root` e senha vazia. Se quiser usar outras credenciais, edite:
-
-- `src/dao/AlunoJDBCDAO.java`
-- `src/dao/TreinoJDBCDAO.java`
-
-SQL de exemplo para criar o banco e as tabelas necessárias:
-
-```sql
-CREATE DATABASE projeto_database CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE projeto_database;
-
-CREATE TABLE alunos (
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	nome VARCHAR(150) NOT NULL,
-	cpf VARCHAR(20),
-	data_nascimento DATE,
-	telefone VARCHAR(30),
-	email VARCHAR(150)
-);
-
-CREATE TABLE treinos (
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	id_aluno INT NOT NULL,
-	treino VARCHAR(100),
-	descricao TEXT,
-	duracao_minutos INT,
-	data_inicio DATE,
-	FOREIGN KEY (id_aluno) REFERENCES alunos(id) ON DELETE CASCADE
-);
-```
-
+Por padrão os DAOs usam a URL `jdbc:mysql://localhost:3306/projeto_database` com usuário `root` e senha vazia. 
 ## Compilação e execução (Windows)
 
 1. Certifique-se de ter o MySQL em execução e de ter colocado o driver JDBC (`mysql-connector-java-*.jar`) dentro de `lib/`.
@@ -88,11 +55,5 @@ java -cp "bin;lib/*" util.GeradorAlunosAleatorios
 
 - Erro de conexão: verifique se o MySQL está rodando e se o conector JDBC está em `lib/`.
 - Erro de permissão ao inserir: verifique usuário/senha e privilégios do usuário no banco.
+- Quando conectado ao netbeans, caso não tenha definido o classpath padrão que vem em `lib/`, o banco não será consultado. 
 
-## Próximos passos sugeridos
-
-- Trocar o armazenamento para SQLite (arquivo único) para facilitar distribuição e testes locais.
-- Substituir campos de data por `JFormattedTextField` ou um date picker para melhorar a entrada do usuário.
-
----
-Arquivo de referência: `src/view/MenuAlunos.java`, `src/view/MenuTreinos.java`, `src/util/GeradorAlunosAleatorios.java`
